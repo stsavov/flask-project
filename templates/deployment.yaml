@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}-deployment
+spec:
+  {{ if eq .Values.deployment.env "dev" }}replicas: 1{{ end }}
+  {{ if eq .Values.deployment.env "prod" }}replicas: 2{{ end }}
+
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+        - name: {{ .Values.name }}
+#          image: 082725164204.dkr.ecr.eu-central-1.amazonaws.com/hello:latest
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.config }}

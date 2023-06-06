@@ -1,0 +1,13 @@
+name: hello
+
+image:
+  repository: ssavov/hello
+  tag: latest
+
+nodePort: 30000
+port: 30000
+targetPort: 5000
+
+config: env
+deployment:
+  env: dev
